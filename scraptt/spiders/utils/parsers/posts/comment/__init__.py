@@ -1,4 +1,4 @@
-from .comment import CommentsValidator
+from .comment import CommentsParser
 
 
-__all__ = ["CommentsValidator"]
+__all__ = ["CommentsParser"]
