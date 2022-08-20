@@ -42,6 +42,8 @@ positional arguments:
 * Crawl the posts of multiple boards:
 
 
+> If you want to save the (segmented) post data, simply add the command, such as `-a data_dir=./ptt_data`, to the command
+
 
 ## Contact
 If you have any suggestion or question, please do not hesitate to email me at philcoke35@gmail.com
