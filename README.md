@@ -21,7 +21,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 
 ### 2. Usage
 
-1. commands
+1. Commands
 ```
 scrapy crawl <spider-name> -a boards=BOARDS [-a all=True] 
             [-a index_from=NUMBER -a index_to=NUMBER]   
@@ -32,6 +32,16 @@ positional arguments:
 <spider-name>           the name of ptt spiders (i.e. boards, ptt_post, and ptt_post_segmentation)
 -a boards=BOARDS        specify which ptt boards
 ```
+
+* Crawl all the posts of a board:
+
+* Crawl all the posts of a board from a year in the past:
+
+* Crawl the posts of a board based on html indexes:
+
+* Crawl the posts of multiple boards:
+
+
 
 ## Contact
 If you have any suggestion or question, please do not hesitate to email me at philcoke35@gmail.com
