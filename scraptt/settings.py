@@ -38,8 +38,8 @@ COOKIES_DEBUG = False
 TELNETCONSOLE_ENABLED = False
 
 # logging
-LOG_LEVEL = "INFO"
-LOG_FILE = "./scraptt.log"
+# LOG_LEVEL = "INFO"
+# LOG_FILE = "./scraptt.log"
 
 # Override the default request headers:
 # DEFAULT_REQUEST_HEADERS = {
