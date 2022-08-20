@@ -22,7 +22,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 ### 2. Usage
 
 1. commands
-```bash
+```
 scrapy crawl <spider-name> -a boards=BOARDS [-a all=True] [-a index_from=NUMBER -a index_to=NUMBER] [-a since=YEAR] [-a data_dir=PATH]
 
 positional arguments:
