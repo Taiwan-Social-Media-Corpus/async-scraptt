@@ -1,50 +1,34 @@
 from scrapy import Request
-from ....configs import COOKIES
-from dataclasses import dataclass
-from typing import List, Callable
-from .base import RequestStrategy
+from ....configs import PTT_BOARD, COOKIES
+from typing import Callable, List, Optional
 
 
-@dataclass
-class AllRequestsStrategy(RequestStrategy):
-    """
-    The AllRequestStrategy object fetches all the boards.
-    """
-
-    boards: List[str]
-
-    def fetch(self, callback: Callable):
-        for board in self.boards:
-            url = f"https://www.ptt.cc/bbs/{board}/index.html"
-            yield Request(url, cookies=COOKIES, callback=callback)
-
-
-@dataclass
-class YearBackwardRequestStrategy(RequestStrategy):
-    """
-    The YearBackwardRequestStrategy object fetches the board from a year in the past to the current.
+def fetch_ptt_boards(
+    boards_list: List[str],
+    callback: Callable,
+    index_from: Optional[str] = None,
+    index_to: Optional[str] = None,
+):
+    """The fetch_ptt_boards function fetches the ptt boards htm indexes.
+    Args:
+        boards_list (list): a list of boards
+        callback (Callable): a scrapy parse function
+        index_from (str | None): the starting html index
+        index_to (str | None): the ending html index
+    Returns:
+        a scrapy Request.
     """
 
-    boards: List[str]
+    for board in boards_list:
+        if index_from is not None and index_to is not None:
+            if int(index_from) > int(index_to):
+                raise ValueError(
+                    "the value of `index_from` cannot be greater than `index_to`."
+                )
 
-    def fetch(self, callback: Callable):
-        board = self.boards[0]
-        url = f"https://www.ptt.cc/bbs/{board}/index.html"
-        yield Request(url, cookies=COOKIES, callback=callback)
-
-
-@dataclass
-class RangeRequestStrategy(RequestStrategy):
-    """
-    The RangeRequestStrategy object fetches the board from a given range.
-    """
-
-    index_from: int
-    index_to: int
-    boards: List[str]
-
-    def fetch(self, callback: Callable):
-        board = self.boards[0]
-        for index_num in range(int(self.index_from), int(self.index_to) + 1):
-            url = f"https://www.ptt.cc/bbs/{board}/index{index_num}.html"
+            for index in range(int(index_from), int(index_to) + 1):
+                url = PTT_BOARD.format(board, index)
+                yield Request(url, cookies=COOKIES, callback=callback)
+        else:
+            url = PTT_BOARD.format(board, "")
             yield Request(url, cookies=COOKIES, callback=callback)

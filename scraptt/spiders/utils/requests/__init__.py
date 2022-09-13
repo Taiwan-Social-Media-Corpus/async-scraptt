@@ -1,12 +1,4 @@
-from .requests import (
-    AllRequestsStrategy,
-    RangeRequestStrategy,
-    YearBackwardRequestStrategy,
-)
+from .requests import fetch_ptt_boards
 
 
-__all__ = [
-    "AllRequestsStrategy",
-    "RangeRequestStrategy",
-    "YearBackwardRequestStrategy",
-]
+__all__ = ["fetch_ptt_boards"]
