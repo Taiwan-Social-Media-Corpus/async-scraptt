@@ -1,17 +1,13 @@
-from typing import Union
 from scrapy import Spider
-from ..utils.requests import (
-    AllRequestsStrategy,
-    RangeRequestStrategy,
-    YearBackwardRequestStrategy,
-)
-from ..utils import get_title_tags
-from abc import ABC, abstractmethod
-from ..utils.parsers.html_index import (
+from typing import Optional
+from ..utils.parsers.html import (
     IndexParser,
-    YearBackwardIndexParser,
     LatestIndexParser,
+    YearBackwardIndexParser,
+    get_title_tags,
 )
+from abc import ABC, abstractmethod
+from ..utils.requests import fetch_ptt_boards
 from scrapy.http.response.html import HtmlResponse
 
 
@@ -22,32 +18,37 @@ class BasePostSpider(Spider, ABC):
 
     allowed_domains = ["ptt.cc"]
 
-    def __init__(self, **kwargs) -> None:
-        self.data_dir = kwargs.pop("data_dir", None)
-        self.boards = kwargs.pop("boards").split(",")
-        self.all = kwargs.pop("all", None)
-        self.index_from = kwargs.pop("index_from", None)
-        self.index_to = kwargs.pop("index_to", None)
-        self.since = kwargs.pop("since", None)
-        self.logger.info(f"要爬的版: {self.boards}")
+    def __init__(
+        self,
+        boards: str,
+        data_dir: str = "./data",
+        ip_cache: bool = False,
+        scrap_all: Optional[bool] = None,
+        index_from: Optional[int] = None,
+        index_to: Optional[int] = None,
+        since: Optional[int] = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.boards = boards.split(",")
+        self.data_dir = data_dir
+        self.ip_cache = ip_cache
+        self.scrap_all = scrap_all
+        self.index_from = index_from
+        self.index_to = index_to
+        self.since = since
+        self.logger.info(f"Targets: {self.boards}")
 
-    def start_requests(self) -> Union[AllRequestsStrategy, YearBackwardRequestStrategy]:
-        """The start_requests method specifies particular PTT URLs by different strategies."""
-
-        if self.all:
-            return AllRequestsStrategy(
-                self.boards,
-            ).fetch(self.parse_latest_index)
-        elif self.since:
-            return YearBackwardRequestStrategy(
-                self.boards,
-            ).fetch(self.parse_index)
-        elif self.index_from is not None and self.index_to is not None:
-            return RangeRequestStrategy(
-                self.index_from, self.index_to, self.boards
-            ).fetch(self.parse_index)
+    def start_requests(self):
+        return fetch_ptt_boards(
+            self.boards, self.parse_index, self.index_from, self.index_to
+        )
 
     def parse_index(self, response: HtmlResponse):
+        if self.scrap_all:
+            return LatestIndexParser(self.logger).parse(response, self.parse_index)
+
         title_tags = get_title_tags(response)
 
         if self.since:
@@ -55,13 +56,10 @@ class BasePostSpider(Spider, ABC):
                 self.since,
                 title_tags,
                 self.logger,
-            ).parse(response, callback=self.parse_post, self_callback=self.parse_index)
+            ).parse(response, callback=self.parse, self_callback=self.parse_index)
 
-        return IndexParser(title_tags).parse(self.parse_post)
-
-    def parse_latest_index(self, response: HtmlResponse):
-        return LatestIndexParser(self.logger).parse(response, self.parse_index)
+        return IndexParser(title_tags).parse(self.parse)
 
     @abstractmethod
-    def parse_post(self, response: HtmlResponse):
+    def parse(self, response: HtmlResponse, **kwargs):
         pass
