@@ -1,5 +1,6 @@
 import re
 import asyncio
+from datetime import datetime
 from ..items import PostItem
 from .base import BasePostSpider
 from scrapy.http.response.html import HtmlResponse
@@ -51,7 +52,7 @@ class PttSpider(BasePostSpider):
         data = {
             "board": board,
             "post_id": post_id,
-            "post_time": timestamp,
+            "date": timestamp,
             "title": post_title,
             "author": post_author,
             "body": body,
