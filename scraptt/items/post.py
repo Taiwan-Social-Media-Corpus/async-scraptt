@@ -9,7 +9,7 @@ class PostItem(BaseModel):
 
     board: str
     post_id: str
-    post_time: str
+    date: str
     title: str
     author: str
     body: str
