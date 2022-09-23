@@ -19,7 +19,7 @@ async def create_meta_data(response: HtmlResponse):
     return await asyncio.gather(key_task, value_task)
 
 
-def get_meta_data(response: HtmlResponse):
+async def get_meta_data(response: HtmlResponse):
     """The get_meta_data function gets the meta data of a post.
 
     Args:
@@ -33,5 +33,5 @@ def get_meta_data(response: HtmlResponse):
         }
     """
 
-    keys, values = asyncio.run(create_meta_data(response))
+    keys, values = await create_meta_data(response)
     return dict(zip(keys, values))
