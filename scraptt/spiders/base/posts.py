@@ -22,7 +22,6 @@ class BasePostSpider(Spider, ABC):
         self,
         boards: str,
         data_dir: str = "./data",
-        ip_cache: bool = False,
         scrap_all: Optional[bool] = None,
         index_from: Optional[int] = None,
         index_to: Optional[int] = None,
@@ -33,7 +32,6 @@ class BasePostSpider(Spider, ABC):
         super().__init__(*args, **kwargs)
         self.boards = boards.split(",")
         self.data_dir = data_dir
-        self.ip_cache = ip_cache
         self.scrap_all = scrap_all
         self.index_from = index_from
         self.index_to = index_to
