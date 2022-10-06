@@ -32,7 +32,7 @@ def create_tei_template(
         <metadata name="author">{author}</metadata>
         <metadata name="post_id">{id}</metadata>
         <metadata name="year">{year}</metadata>
-        <metadata name="board">{board}</metadata>
+        <metadata name="board">{board}-ptt</metadata>
         <metadata name="media">ptt</metadata>
     </teiHeader>
     <text>
