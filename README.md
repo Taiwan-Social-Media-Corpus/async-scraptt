@@ -62,4 +62,3 @@ positional arguments:
 
 ## Contact
 If you have any suggestion or question, please do not hesitate to email us at  shukai@gmail.com or philcoke35@gmail.com
-n, please do not hesitate to email me at philcoke35@gmail.com
