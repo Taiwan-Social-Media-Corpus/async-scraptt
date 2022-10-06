@@ -16,7 +16,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 
 3. Install Requirement
     ```bash
-    cd async-scraptt && pip install -r requirement.txt      
+    cd async-scraptt && pip install -r requirements.txt      
     ```
 
 ### 2. Usage
