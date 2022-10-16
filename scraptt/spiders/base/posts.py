@@ -7,7 +7,7 @@ from ..utils.parsers.html import (
     get_title_tags,
 )
 from abc import ABC, abstractmethod
-from ..utils.requests import fetch_ptt_boards
+from ..utils.request import fetch_ptt_boards
 from scrapy.http.response.html import HtmlResponse
 
 
