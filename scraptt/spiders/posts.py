@@ -1,6 +1,5 @@
 import re
 import asyncio
-from datetime import datetime
 from ..items import PostItem
 from .base import BasePostSpider
 from scrapy.http.response.html import HtmlResponse
