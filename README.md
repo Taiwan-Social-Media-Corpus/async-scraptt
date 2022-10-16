@@ -10,7 +10,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 
 2. Clone repository
     ```bash
-    git@github.com:Taiwan-Social-Media-Corpus/async-scraptt.git
+    git clone git@github.com:Taiwan-Social-Media-Corpus/async-scraptt.git
     ```
 
 3. Install Requirement
