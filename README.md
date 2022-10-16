@@ -9,14 +9,20 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
    * `python == 3.7.5`
 
 2. Clone repository
-
     ```bash
-    git clone git@github.com:PTT-Corpus/async-scraptt.git
+    git@github.com:Taiwan-Social-Media-Corpus/async-scraptt.git
     ```
 
 3. Install Requirement
+* pip
+
     ```bash
     cd async-scraptt && pip install -r requirements.txt      
+    ```
+* pipenv
+
+    ```bash
+    cd async-scraptt && pipenv install -r requirements.txt    
     ```
 
 ### 2. Usage
@@ -61,4 +67,4 @@ positional arguments:
 
 
 ## Contact
-If you have any suggestion or question, please do not hesitate to email us at  shukai@gmail.com or philcoke35@gmail.com
+If you have any suggestion or question, please do not hesitate to email us at shukai@gmail.com or philcoke35@gmail.com
