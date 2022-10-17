@@ -22,7 +22,7 @@ class BasePostSpider(Spider, ABC):
         self,
         boards: str,
         data_dir: str = "./data",
-        scrap_all: Optional[bool] = None,
+        scrape_all: Optional[bool] = None,
         index_from: Optional[int] = None,
         index_to: Optional[int] = None,
         since: Optional[int] = None,
@@ -32,7 +32,7 @@ class BasePostSpider(Spider, ABC):
         super().__init__(*args, **kwargs)
         self.boards = boards.split(",")
         self.data_dir = data_dir
-        self.scrap_all = scrap_all
+        self.scrape_all = scrape_all
         self.index_from = index_from
         self.index_to = index_to
         self.since = since
@@ -44,7 +44,7 @@ class BasePostSpider(Spider, ABC):
         )
 
     def parse_index(self, response: HtmlResponse):
-        if self.scrap_all:
+        if self.scrape_all:
             return LatestIndexParser(self.logger).parse(response, self.parse_index)
 
         title_tags = get_title_tags(response)
