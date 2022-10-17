@@ -45,8 +45,8 @@ class PttSpider(BasePostSpider):
         timestamp = re.search(r"(\d{10})", response.url).group(1)
 
         meta_header, comment_counter, comments = asyncio.run(get_post_info(response))
-        post_title = meta_header["標題"] if meta_header["標題"] else ""
-        post_author = meta_header["作者"] if meta_header["作者"] else ""
+        post_title = meta_header.get("標題", "")
+        post_author = meta_header.get("作者", "")
 
         data = {
             "board": board,
