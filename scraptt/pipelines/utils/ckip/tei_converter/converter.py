@@ -24,21 +24,23 @@ def create_tei_template(
     year: str,
     board: str,
     title: str,
+    segmented_title: str,
     body: str,
     comments: str,
 ) -> str:
     return f"""<TEI.2>
     <teiHeader>
-        <metadata name="author">{author}</metadata>
-        <metadata name="post_id">{id}</metadata>
-        <metadata name="year">{year}</metadata>
-        <metadata name="board">{board}-ptt</metadata>
         <metadata name="media">ptt</metadata>
+        <metadata name="board">{board}-ptt</metadata>
+        <metadata name="post_id">{id}</metadata>
+        <metadata name="author">{author}</metadata>
+        <metadata name="year">{year}</metadata>
+        <metadata name="title">{title}</metadata>
     </teiHeader>
     <text>
         <title author="{author}">
         <s>
-        {title}
+        {segmented_title}
         </s>
         </title>
         <body author="{author}">
@@ -74,15 +76,17 @@ class TeiConverter:
         post_id = self.post_data["post_id"]
         post_author = self.post_data["author"]
         post_board = self.post_data["board"]
+        post_title = self.post_data['title']
         year, month, day = create_datetime(self.post_data["date"])
-        title, body, comments = asyncio.run(self.create_multiple_tei_tags())
+        segmented_title, body, comments = asyncio.run(self.create_multiple_tei_tags())
 
         return create_tei_template(
             author=post_author,
             id=post_id,
             year=year,
             board=post_board,
-            title=title,
+            title=post_title, 
+            segmented_title=segmented_title,
             body=body,
             comments=comments,
         )
