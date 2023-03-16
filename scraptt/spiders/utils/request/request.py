@@ -1,6 +1,15 @@
+from typing import (
+    Callable,
+    List,
+    Optional,
+)
+
 from scrapy import Request
-from ....configs import PTT_BOARD, COOKIES
-from typing import Callable, List, Optional
+
+from scraptt.config import (
+    COOKIES,
+    PTT_BOARD,
+)
 
 
 def fetch_ptt_boards(
