@@ -1,4 +1,4 @@
-from .urls import (
+from .ptt import (
     COOKIES,
     PTT,
     PTT_BOARD,
