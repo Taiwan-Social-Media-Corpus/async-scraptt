@@ -6,7 +6,8 @@ class HTMLStripper(HTMLParser):
     The HTMLStripper object strips HTML tags.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, convert_charrefs: bool = True) -> None:
+        super().__init__(convert_charrefs=convert_charrefs)
         self.reset()
         self.strict = False
         self.convert_charrefs = True
