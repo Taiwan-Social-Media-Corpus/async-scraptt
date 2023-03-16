@@ -1,7 +1,12 @@
-from typing import Any, Dict
+from typing import (
+    Any,
+    Dict,
+)
+
+from ckip2tei import generate_tei_xml
+
 from ..spiders import PttSpider
-from .utils.path import make_file_path
-from .utils.ckip.tei_converter import TeiConverter
+from .utils import make_file_path
 
 
 class CkipPipeline:
@@ -12,7 +17,7 @@ class CkipPipeline:
 
     def process_item(self, item: Dict[str, Any], spider: PttSpider) -> None:
         file_path = make_file_path(item, spider.data_dir)
-        tei_content = TeiConverter(item).convert()
+        tei_xml = generate_tei_xml(item, "ptt")
 
-        with open(f"{file_path}.xml", "w") as file:
-            file.write(tei_content)
+        with open(f"{file_path}.xml", "w", encoding="utf-8") as file:
+            file.write(tei_xml)
