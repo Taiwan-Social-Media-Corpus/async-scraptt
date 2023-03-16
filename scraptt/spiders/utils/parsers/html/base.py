@@ -1,5 +1,9 @@
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from typing import Callable
-from abc import ABC, abstractmethod
+
 from scrapy.http.response.html import HtmlResponse
 
 
@@ -11,5 +15,4 @@ class Parser(ABC):
 
     @abstractmethod
     def parse(self, response: HtmlResponse, callback: Callable, **kwargs):
-        """The parse method initiates the parsing processes."""
         pass
