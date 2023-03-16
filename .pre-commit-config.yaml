@@ -1,0 +1,34 @@
+exclude: ^LICENSE/|\.(pickle|ipynb)$
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: check-docstring-first
+      - id: debug-statements
+        language_version: python3
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: v2.7
+    hooks:
+      - id: vulture
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: poetry run pylint
+        language: system
+        types: [python]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+    - id: pyupgrade
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
