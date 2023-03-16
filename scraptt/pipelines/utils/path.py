@@ -1,6 +1,9 @@
-from pathlib import Path
-from typing import Dict, Any
 from datetime import datetime
+from pathlib import Path
+from typing import (
+    Any,
+    Dict,
+)
 
 
 def make_file_path(item: Dict[str, Any], data_dir: str) -> str:
