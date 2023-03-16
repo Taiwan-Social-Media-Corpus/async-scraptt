@@ -1,14 +1,19 @@
-from scrapy import Spider
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from typing import Optional
+
+from scrapy import Spider
+from scrapy.http.response.html import HtmlResponse
+
 from ..utils.parsers.html import (
     IndexParser,
     LatestIndexParser,
     YearBackwardIndexParser,
     get_title_tags,
 )
-from abc import ABC, abstractmethod
 from ..utils.request import fetch_ptt_boards
-from scrapy.http.response.html import HtmlResponse
 
 
 class BasePostSpider(Spider, ABC):
@@ -20,13 +25,13 @@ class BasePostSpider(Spider, ABC):
 
     def __init__(
         self,
+        *args,
         boards: str,
         data_dir: str = "./data",
         scrape_all: Optional[bool] = None,
         index_from: Optional[int] = None,
         index_to: Optional[int] = None,
         since: Optional[int] = None,
-        *args,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
