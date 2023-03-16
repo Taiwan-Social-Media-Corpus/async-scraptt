@@ -1,6 +1,8 @@
-import re
-from pyquery import PyQuery
 from dataclasses import dataclass
+import re
+
+from pyquery import PyQuery
+
 from .html_stripper import HTMLStripper
 
 
