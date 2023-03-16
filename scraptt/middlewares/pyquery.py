@@ -9,6 +9,7 @@ class PyqueryMiddleware:
     The PyqueryMiddleware object injects PyQuery object into Scrapy `response`.
     """
 
-    def process_response(self, *, response: HtmlResponse) -> HtmlResponse:
+    # pylint: disable=unused-argument
+    def process_response(self, request, response: HtmlResponse, spider) -> HtmlResponse:
         response.dom = PyQuery(response.text).make_links_absolute(PTT)
         return response
