@@ -1,70 +1,50 @@
+import asyncio
+
 from pyquery import PyQuery
-from pydantic import BaseModel
-from dataclasses import dataclass
-from typing import Dict, List, Tuple, Union
 from scrapy.http.response.html import HtmlResponse
 
+from .validation import CommentsValidator
 
 VOTE_TYPE = {"推": "pos", "噓": "neg", "→": "neu"}
 
 
-class CommentsValidator(BaseModel):
+async def create_comment(push_item: tuple[int, PyQuery]) -> dict[str, str | int]:
+    """The create_comment_data method creates the comment data.
+    Args:
+        push_item (tuple): a tuple including comment index and a PyQuery object.
+    Returns:
+        a dict: {
+            'type': 'neu',
+            'author': 'LoveMoon',
+            'content': '最近面試一些五六年經驗也是只懂皮毛',
+            'order': 10
+        }
     """
-    The CommentsValidator object keeps track of an item in inventory, including `type`,
-    `author`, `content` and `order`.
+    index, value = push_item
+    comment_order = index + 1
+    comment_type = value(".push-tag").text()
+    author = value(".push-userid").text().split(" ")[0]
+    content = value(".push-content").text().lstrip(" :").strip()
+
+    comment = CommentsValidator(
+        type=VOTE_TYPE[comment_type],
+        author=author,
+        content=content,
+        order=comment_order,
+    )
+
+    return comment.dict()
+
+
+async def create_comments(response: HtmlResponse) -> list[dict[str, str]]:
+    """The parse method parses the comments data.
+    Returns:
+        a list of dicts
     """
+    push_items = response.dom(".push").items()
+    tasks = []
+    for push_item in enumerate(push_items):
+        task = asyncio.create_task(create_comment(push_item))
+        tasks.append(task)
 
-    type: str
-    author: str
-    content: str
-    order: int
-
-
-@dataclass
-class CommentsParser:
-    """
-    The CommentsParser object parses the comments.
-    """
-
-    response: HtmlResponse
-
-    def create_comment_data(
-        self, push_item: Tuple[int, PyQuery]
-    ) -> Dict[str, Union[str, int]]:
-        """The create_comment_data method creates the comment data.
-
-        Args:
-            push_item (tuple): a tuple including comment index and a PyQuery object.
-        Returns:
-            a dict: {
-                'type': 'neu',
-                'author': 'LoveMoon',
-                'content': '最近面試一些五六年經驗也是只懂皮毛',
-                'order': 10
-            }
-        """
-        index, value = push_item
-        comment_order = index + 1
-        comment_type = value(".push-tag").text()
-        author = value(".push-userid").text().split(" ")[0]
-        content = value(".push-content").text().lstrip(" :").strip()
-
-        comment = CommentsValidator(
-            type=VOTE_TYPE[comment_type],
-            author=author,
-            content=content,
-            order=comment_order,
-        )
-
-        return comment.dict()
-
-    async def parse(self) -> List[Dict[str, str]]:
-        """The parse method parses the comments data.
-
-        Returns:
-            a list of dicts
-        """
-
-        push_items = self.response.dom(".push").items()
-        comments = map(self.create_comment_data, enumerate(push_items))
-        return list(comments)
+    return await asyncio.gather(*tasks)
