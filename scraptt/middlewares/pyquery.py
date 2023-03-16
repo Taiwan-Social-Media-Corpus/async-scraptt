@@ -1,7 +1,7 @@
 from pyquery import PyQuery
 from scrapy.http.response.html import HtmlResponse
 
-from ..configs import PTT
+from ..config import PTT
 
 
 class PyqueryMiddleware:
