@@ -1,4 +1,9 @@
-from typing import Dict, List
+# pylint: disable=no-name-in-module
+from typing import (
+    Dict,
+    List,
+)
+
 from pydantic import BaseModel
 
 
