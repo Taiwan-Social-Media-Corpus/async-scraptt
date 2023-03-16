@@ -1,9 +1,8 @@
-from typing import List
-from scrapy.selector import Selector
 from scrapy.http.response.html import HtmlResponse
+from scrapy.selector import Selector
 
 
-def get_title_tags(response: HtmlResponse) -> List[Selector]:
+def get_title_tags(response: HtmlResponse) -> list[Selector]:
     """The get_title_tags function gets the title tags DOM.
     Args:
         response (HtmlResponse): the scrapy HtmlResponse.
