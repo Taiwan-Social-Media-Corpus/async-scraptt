@@ -1,9 +1,9 @@
-from typing import Dict, List
 from collections import Counter
+
 from scrapy.http.response.html import HtmlResponse
 
 
-async def count_comments(response: HtmlResponse) -> Dict[str, int]:
+async def count_comments(response: HtmlResponse) -> dict[str, int]:
     """The count_comments function counts the total number of comments in a ptt post.
 
     Args:
@@ -16,7 +16,7 @@ async def count_comments(response: HtmlResponse) -> Dict[str, int]:
         }
     """
 
-    push_tags: List[str] = response.css('span[class*="push-tag"]::text').getall()
+    push_tags: list[str] = response.css('span[class*="push-tag"]::text').getall()
     total_comments = [push_tag.strip() for push_tag in push_tags]
     counter = Counter(total_comments)
     ups = counter["推"]
