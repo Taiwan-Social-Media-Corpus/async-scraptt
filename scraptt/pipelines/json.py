@@ -1,10 +1,20 @@
 from io import BufferedWriter
+from typing import (
+    Any,
+    Dict,
+    Tuple,
+)
+
+from scrapy.exporters import (
+    BaseItemExporter,
+    JsonItemExporter,
+)
+
 from ..spiders import PttSpider
-from typing import Any, Dict, Tuple
 from .utils.path import make_file_path
-from scrapy.exporters import BaseItemExporter, JsonItemExporter
 
 
+# pylint: disable=unused-argument, attribute-defined-outside-init, consider-using-with
 class JsonPipeline:
     """
     The JsonPipeline object writes the scraped item to json.
