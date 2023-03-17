@@ -7,13 +7,13 @@ from typing import Optional
 from scrapy import Spider
 from scrapy.http.response.html import HtmlResponse
 
-from ..utils.parsers.html import (
-    IndexParser,
-    LatestIndexParser,
-    YearBackwardIndexParser,
-    get_title_tags,
-)
 from ..utils.request import fetch_ptt_boards
+from .utils import get_title_tags
+from .utils.parsers import (
+    parse_index,
+    parse_latest_index,
+    parse_year_range_index,
+)
 
 
 class BasePostSpider(Spider, ABC):
@@ -50,18 +50,15 @@ class BasePostSpider(Spider, ABC):
 
     def parse_index(self, response: HtmlResponse):
         if self.scrape_all:
-            return LatestIndexParser(self.logger).parse(response, self.parse_index)
+            return parse_latest_index(response, self.parse_index)
 
         title_tags = get_title_tags(response)
 
         if self.since:
-            return YearBackwardIndexParser(
-                self.since,
-                title_tags,
-                self.logger,
-            ).parse(response, callback=self.parse, self_callback=self.parse_index)
-
-        return IndexParser(title_tags).parse(self.parse)
+            return parse_year_range_index(
+                self.since, title_tags, response, self.parse, self.parse_index
+            )
+        return parse_index(title_tags, self.parse)
 
     @abstractmethod
     def parse(self, response: HtmlResponse, **kwargs):
