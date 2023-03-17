@@ -1,21 +1,26 @@
-import re
 import asyncio
+import re
+
+from scrapy.http.response.html import HtmlResponse
+
 from ..items import PostItem
 from .base import BasePostSpider
-from scrapy.http.response.html import HtmlResponse
-from .utils.parsers.posts.meta import get_meta_data
-from .utils.parsers.posts.content import ContentCleaner
-from .utils.parsers.posts.comment import count_comments, CommentsParser
+from .utils.parsers.comment import (
+    count_comments,
+    create_comments,
+)
+from .utils.parsers.content import clean_content
+from .utils.parsers.meta import get_meta_data
 
 
 async def get_post_info(response: HtmlResponse):
-    return await asyncio.gather(
-        *[
-            get_meta_data(response),
-            count_comments(response),
-            CommentsParser(response).parse(),
-        ]
-    )
+    handlers = (get_meta_data, count_comments, create_comments)
+    tasks = []
+    for handler in handlers:
+        task = asyncio.create_task(handler(response))
+        tasks.append(task)
+
+    return await asyncio.gather(*tasks)
 
 
 class PttSpider(BasePostSpider):
@@ -28,25 +33,26 @@ class PttSpider(BasePostSpider):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
 
+    # pylint: disable=arguments-differ
     def parse(self, response: HtmlResponse):
         main_content = response.dom("#main-content")
 
         if not main_content:
             return None
 
-        body = ContentCleaner(main_content).clean()
+        body = clean_content(main_content)
 
         if body is None:
             return None
 
-        post_url = response.url
+        post_url: str = response.url
         board = re.search(r"www\.ptt\.cc\/bbs\/([\w\d\-_]{1,30})\/", post_url).group(1)
         post_id = post_url.split("/")[-1].split(".html")[0]
         timestamp = re.search(r"(\d{10})", response.url).group(1)
 
         meta_header, comment_counter, comments = asyncio.run(get_post_info(response))
         post_title = meta_header.get("標題", "")
-        post_author = meta_header.get("作者", "")
+        post_author = meta_header.get("作者", "匿名")
 
         data = {
             "board": board,
@@ -60,3 +66,4 @@ class PttSpider(BasePostSpider):
         }
 
         yield PostItem(**data).dict()
+        return None
