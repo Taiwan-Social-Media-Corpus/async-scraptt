@@ -6,7 +6,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 ### 1. Installation
 
 1. Python version
-   * `python == 3.7.5`
+   * `python >= 3.10`
 
 2. Clone repository
     ```bash
@@ -17,20 +17,20 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 * pip
 
     ```bash
-    cd async-scraptt && pip install -r requirements.txt      
+    cd async-scraptt && pip install -r requirements.txt
     ```
-* pipenv
+* poetry
 
     ```bash
-    cd async-scraptt && pipenv install -r requirements.txt    
+    cd async-scraptt && poetry shell && poetry install
     ```
 
 ### 2. Usage
 
 1. Commands
 ```
-scrapy crawl ptt -a boards=BOARDS [-a scrape_all=BOOLEAN] 
-            [-a index_from=NUMBER -a index_to=NUMBER]   
+scrapy crawl ptt -a boards=BOARDS [-a scrape_all=BOOLEAN]
+            [-a index_from=NUMBER -a index_to=NUMBER]
             [-a since=YEAR] [-a data_dir=PATH]
 
 positional arguments:
@@ -67,4 +67,5 @@ positional arguments:
 
 
 ## Contact
-If you have any suggestion or question, please do not hesitate to email us at shukai@gmail.com or philcoke35@gmail.com
+If you have any suggestion or question, please do not hesitate to email us at shukai@gmail.com or
+lixingyang.dev@gmail.com
