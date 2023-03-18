@@ -9,7 +9,7 @@ packages = [{include = "scraptt"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 scrapy = "^2.8.0"
-ckip2tei = "^1.0.1"
+ckip2tei = "^1.0.2"
 pyquery = "^2.0.0"
 pydantic = "^1.10.6"
 scrapy-fake-useragent = "^1.4.4"
@@ -18,7 +18,7 @@ scrapy-user-agents = "^0.1.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
-pre-commit = "^3.1.1"
+pre-commit = "^3.2.0"
 pylint = "^2.17.0"
 vulture = "^2.7"
 
