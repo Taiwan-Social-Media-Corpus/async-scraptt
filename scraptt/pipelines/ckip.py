@@ -17,6 +17,7 @@ class CkipPipeline:
 
     def process_item(self, item: Dict[str, Any], spider: PttSpider) -> None:
         file_path = make_file_path(item, spider.data_dir)
+        item["board"] = f"{item['board']}-ptt"
         tei_xml = generate_tei_xml(item, "ptt")
 
         with open(f"{file_path}.xml", "w", encoding="utf-8") as file:
