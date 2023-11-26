@@ -4,3 +4,4 @@ pyquery==2.0.0
 pydantic==1.10.6
 scrapy-fake-useragent==1.4.4
 scrapy-user-agents==0.1.1
+Twisted==22.10.0
